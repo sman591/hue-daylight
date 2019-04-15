@@ -29,6 +29,7 @@ class Client
       temp = first_temp + (index * interval_size)
       light.set_state({ color_temperature: temp }, 1 * SECONDS)
     end
+    target_temp
   end
 
   def set_daytime_temp(datetime)
@@ -46,7 +47,6 @@ class Client
     end
     target_temp = ((END_TEMP - START_TEMP) * progress) + START_TEMP
     target_temp = target_temp.to_int
-    print " Color: #{target_temp}"
     set_temp(target_temp)
   end
 end
@@ -61,7 +61,8 @@ end
 (1..18).each do |step|
   date = time_start + (1.hour * step)
   print "Running at #{date}"
-  client.set_daytime_temp(date)
+  set_temp = client.set_daytime_temp(date)
+  print " set to #{set_temp}"
   puts
   sleep 1
 end
